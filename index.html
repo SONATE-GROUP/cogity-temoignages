@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Automatisez vos ordres de transport | Cogity</title>
-<meta name="description" content="Vos ordres de transport passent du mail au TMS sans ressaisie. 80 % de saisie manuelle en moins, pilote en production en moins de 2 semaines. Réservez une démo de 30 minutes.">
+<meta name="description" content="Vos ordres de transport passent du mail au TMS sans ressaisie. 80 % de saisie manuelle en moins, pilote en production en moins de 2 semaines. Réservez une démo de 30 minutes.">
 <meta property="og:title" content="Automatisez vos ordres de transport | Cogity">
 <meta property="og:description" content="Vos ordres de transport passent du mail au TMS sans ressaisie. Réservez une démo de 30 minutes.">
 <meta property="og:image" content="https://cogity.com/cogity-banner.png">
@@ -39,12 +39,14 @@ tailwind.config = {
 <style>
   html, body { overflow-x: hidden; max-width: 100%; }
   html { scroll-behavior: smooth; }
-  /* La graisse des titres est posée en classe utilitaire (font-extrabold) :
+  /* La graisse des titres est posée en classe utilitaire (font-bold) :
      le preflight Tailwind applique h1-h6 { font-weight: inherit }, et son CSS,
      injecté par le CDN à l'exécution, passe après ce bloc dans la cascade —
-     une règle font-weight posée ici sur h1/h2/h3 serait donc écrasée.
-     Seul l'interlettrage tient, le preflight ne le réinitialise pas. */
-  h1, h2, h3 { letter-spacing: -0.03em; }
+     une règle font-weight posée ici sur h1/h2 serait donc écrasée.
+     Seul l'interlettrage tient, le preflight ne le réinitialise pas.
+     -0.025em = le tracking-tight que le site pose sur chacun de ses titres.
+     h3 est hors de la règle : le site ne resserre pas ses h3. */
+  h1, h2 { letter-spacing: -0.025em; }
   .eyebrow { font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
   /* Trame du hero, reprise du site */
   .trame {
@@ -87,7 +89,7 @@ const DATA = {
     logoNoir:  "https://cogity.com/cogity-logo.png",
     logoBlanc: "https://cdn.prod.website-files.com/68a5c3dd07199769270d9899/68bd9f67b84fe73564e8d492_logo-long-white.png",
     site: "https://cogity.com/",
-    baseline: "Éditeur français de logiciels d'automatisation des opérations.",
+    baseline: "Éditeur français de logiciels d’automatisation des opérations.",
     hebergement: "Hébergé en France. SaaS ou on-premise.",
     mentionsUrl: "https://cogity.com/",
     confidentialiteUrl: "https://cogity.com/"
@@ -96,19 +98,19 @@ const DATA = {
   cta: {
     libelle: "Réserver une démo",
     url: "https://bookings.cloud.microsoft/book/CogityPrisedecontact@byfragment.com/?ismsaljsauthenabled=true",
-    precision: "Échange de 30 min, sans engagement."
+    precision: "Échange de 30 min, sans engagement."
   },
 
   hero: {
     eyebrow: "Solution Transport",
-    titre: ["Moins de ressaisie.", "Plus de temps d'exploitation.", "Vos OT injectés dans votre TMS."],
-    chapo: "Un ordre de transport arrive par mail à 08 h 00. Il est dans votre TMS à 08 h 02, extrait et contrôlé, sans un seul copier-coller. Vos exploitants récupèrent environ 2 heures par jour.",
+    titre: ["Moins de ressaisie.", "Plus de temps d’exploitation.", "Vos OT injectés dans votre TMS."],
+    chapo: "Un ordre de transport arrive par mail à 08 h 00. Il est dans votre TMS à 08 h 02, extrait et contrôlé, sans un seul copier-coller. Vos exploitants récupèrent environ 2 heures par jour.",
     ctaSecondaire: { libelle: "Voir les témoignages", ancre: "#temoignages" },
     pills: ["Compatible avec votre TMS actuel", "Hébergé en France ou on-premise", "Sans accès à votre boîte mail"],
     chiffres: [
-      { valeur: "−80 %",  libelle: "de saisies manuelles sur les OT entrants" },
+      { valeur: "−80 %",  libelle: "de saisies manuelles sur les OT entrants" },
       { valeur: "×3",     libelle: "de vitesse de traitement des ordres" },
-      { valeur: "< 2 sem.", libelle: "pour un premier pilote en production" }
+      { valeur: "< 2 sem.", libelle: "pour un premier pilote en production" }
     ]
   },
 
@@ -117,13 +119,13 @@ const DATA = {
     titre: "Le même OT, deux journées différentes",
     chapo: "Vos exploitants reçoivent des dossiers déjà structurés et contrôlés. Pas des PDF à saisir.",
     avant: {
-      etiquette: "Aujourd'hui",
+      etiquette: "Aujourd’hui",
       lignes: [
         "OT reçu en PDF, en texte libre ou en Excel maison",
         "Un exploitant le lit, le recopie, le vérifie",
         "5 à 10 minutes par commande, plusieurs dizaines par jour",
         "Une faute de frappe devient un appel client",
-        "L'écart se paie en litige à J+30"
+        "L’écart se paie en litige à J+30"
       ]
     },
     apres: {
@@ -140,14 +142,14 @@ const DATA = {
 
   flux: {
     eyebrow: "Flux de traitement",
-    titre: "Du document brut à l'action métier en 5 étapes",
+    titre: "Du document brut à l’action métier en 5 étapes",
     chapo: "Vous ajoutez une règle de transfert sur votre boîte de réception. Nous ne touchons pas à votre messagerie.",
     etapes: [
-      { heure: "08 h 00", titre: "Réception",   detail: "OT, CMR ou BL en PDF, mail, EDI ou scan" },
-      { heure: "08 h 00", titre: "Extraction",  detail: "Champs clés structurés par les agents IA" },
-      { heure: "08 h 01", titre: "Contrôle",    detail: "Règles métier, complétude, référentiel client" },
-      { heure: "08 h 02", titre: "Injection",   detail: "Dossier créé dans votre TMS, sans rupture" },
-      { heure: "08 h 02", titre: "Supervision", detail: "Alerte temps réel sur anomalie" }
+      { heure: "08 h 00", titre: "Réception",   detail: "OT, CMR ou BL en PDF, mail, EDI ou scan" },
+      { heure: "08 h 00", titre: "Extraction",  detail: "Champs clés structurés par les agents IA" },
+      { heure: "08 h 01", titre: "Contrôle",    detail: "Règles métier, complétude, référentiel client" },
+      { heure: "08 h 02", titre: "Injection",   detail: "Dossier créé dans votre TMS, sans rupture" },
+      { heure: "08 h 02", titre: "Supervision", detail: "Alerte temps réel sur anomalie" }
     ],
     conclusion: "Zéro ressaisie. Traçabilité complète. TMS alimenté en temps réel."
   },
@@ -208,35 +210,35 @@ const DATA = {
     ],
     chiffres: [
       { valeur: "+20",     libelle: "transporteurs équipés" },
-      { valeur: "360 000", libelle: "OT traités automatiquement" },
-      { valeur: "−60 %",   libelle: "de litiges documentaires sur OT, BL et factures" },
-      { valeur: "98 %",    libelle: "de satisfaction client" }
+      { valeur: "360 000", libelle: "OT traités automatiquement" },
+      { valeur: "−60 %",   libelle: "de litiges documentaires sur OT, BL et factures" },
+      { valeur: "98 %",    libelle: "de satisfaction client" }
     ],
-    note: "Chiffres constatés sur des déploiements transport de 1 000 à 15 000 documents par mois. Données 2025 à 2026."
+    note: "Chiffres constatés sur des déploiements transport de 1 000 à 15 000 documents par mois. Données 2025 à 2026."
   },
 
   faq: {
     eyebrow: "Questions fréquentes",
-    titre: "Les trois questions qu'on nous pose toujours",
+    titre: "Les trois questions qu’on nous pose toujours",
     items: [
       {
-        q: "Faut-il changer de TMS ?",
-        r: "Non. Cogity s'intègre nativement avec les principaux TMS du marché : Akanea, Hardis, Transwide, Generix, MyTower, Wiilog et d'autres. Si votre TMS dispose d'une API ou d'un connecteur EDI, l'intégration est possible. Nous ne remplaçons rien, nous alimentons ce que vous utilisez déjà."
+        q: "Faut-il changer de TMS ?",
+        r: "Non. Cogity s’intègre nativement avec les principaux TMS du marché : Akanea, Hardis, Transwide, Generix, MyTower, Wiilog et d’autres. Si votre TMS dispose d’une API ou d’un connecteur EDI, l’intégration est possible. Nous ne remplaçons rien, nous alimentons ce que vous utilisez déjà."
       },
       {
-        q: "Qui a accès à nos données ?",
-        r: "Personne d'autre que vous. Les documents sont traités en France ou dans l'Union européenne, avec des rôles et habilitations par utilisateur et un journal d'audit opposable en cas de litige. Nous n'accédons jamais à votre boîte mail : vous mettez en place une règle de transfert vers une adresse dédiée."
+        q: "Qui a accès à nos données ?",
+        r: "Personne d’autre que vous. Les documents sont traités en France ou dans l’Union européenne, avec des rôles et habilitations par utilisateur et un journal d’audit opposable en cas de litige. Nous n’accédons jamais à votre boîte mail : vous mettez en place une règle de transfert vers une adresse dédiée."
       },
       {
-        q: "Combien de temps pour démarrer ?",
-        r: "Moins de deux semaines pour un premier pilote en production, sans refonte de votre système d'information. On commence par le flux qui vous coûte le plus cher, en général les OT entrants."
+        q: "Combien de temps pour démarrer ?",
+        r: "Moins de deux semaines pour un premier pilote en production, sans refonte de votre système d’information. On commence par le flux qui vous coûte le plus cher, en général les OT entrants."
       }
     ]
   },
 
   final: {
-    titre: "Prêt à automatiser vos flux transport ?",
-    chapo: "On regarde ensemble votre volume de documents, vos formats et votre TMS. À l'issue de l'échange, vous savez combien d'heures cette automatisation vous rendrait."
+    titre: "Prêt à automatiser vos flux transport ?",
+    chapo: "On regarde ensemble votre volume de documents, vos formats et votre TMS. À l’issue de l’échange, vous savez combien d’heures cette automatisation vous rendrait."
   },
 
   /* Aucun identifiant en dur. Les tags ne se chargent qu'après consentement. */
@@ -256,7 +258,7 @@ const ctaBleu = (extra = "px-6 py-3.5 text-base") => `
 
 const titreSection = (eyebrow, titre, chapo, sombre = false) => `
   <p class="eyebrow reveal ${sombre ? 'text-primary-500' : 'text-primary-600'}">${e(eyebrow)}</p>
-  <h2 class="reveal mt-4 text-3xl sm:text-4xl font-extrabold ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
+  <h2 class="reveal mt-4 text-3xl md:text-4xl font-bold ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
   ${chapo ? `<p class="reveal mt-5 mx-auto max-w-2xl text-lg ${sombre ? 'text-slate-300' : 'text-slate-600'} leading-relaxed">${e(chapo)}</p>` : ``}`;
 
 const header = () => `
@@ -279,7 +281,7 @@ const hero = () => `
   <div class="absolute inset-0 trame"></div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center">
     <p class="eyebrow text-primary-500">${e(DATA.hero.eyebrow)}</p>
-    <h1 class="mt-6 mx-auto max-w-5xl text-4xl/[1.05] sm:text-5xl/[1.05] md:text-6xl/[1.05] font-extrabold text-white">
+    <h1 class="mt-6 mx-auto max-w-5xl text-4xl/[1.1] sm:text-5xl/none md:text-6xl/none font-bold text-white">
       ${DATA.hero.titre.map(l => `<span class="block">${e(l)}</span>`).join("")}
     </h1>
     <p class="mt-8 mx-auto max-w-2xl text-lg text-slate-300 leading-relaxed">${e(DATA.hero.chapo)}</p>
@@ -413,7 +415,7 @@ const final = () => `
 <section class="relative overflow-hidden bg-navy-800 py-20 lg:py-24">
   <div class="absolute inset-0 trame"></div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">${e(DATA.final.titre)}</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-white">${e(DATA.final.titre)}</h2>
     <p class="mt-6 mx-auto max-w-2xl text-lg text-slate-200 leading-relaxed">${e(DATA.final.chapo)}</p>
     <div class="mt-10">${ctaBleu("px-8 py-4 text-base")}</div>
     <p class="mt-4 text-sm text-slate-300">${e(DATA.cta.precision)}</p>
@@ -487,8 +489,8 @@ function chargerTags() {
   b.innerHTML = `
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
       <p class="text-sm text-slate-600 max-w-lisible">
-        Nous utilisons des cookies de mesure d'audience pour savoir quelles pages sont consultées.
-        Aucun cookie n'est déposé sans votre accord.
+        Nous utilisons des cookies de mesure d’audience pour savoir quelles pages sont consultées.
+        Aucun cookie n’est déposé sans votre accord.
       </p>
       <div class="flex gap-3 shrink-0">
         <button data-refus class="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium">Refuser</button>
