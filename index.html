@@ -39,12 +39,14 @@ tailwind.config = {
 <style>
   html, body { overflow-x: hidden; max-width: 100%; }
   html { scroll-behavior: smooth; }
-  /* La graisse des titres est posée en classe utilitaire (font-extrabold) :
+  /* La graisse des titres est posée en classe utilitaire (font-bold) :
      le preflight Tailwind applique h1-h6 { font-weight: inherit }, et son CSS,
      injecté par le CDN à l'exécution, passe après ce bloc dans la cascade —
-     une règle font-weight posée ici sur h1/h2/h3 serait donc écrasée.
-     Seul l'interlettrage tient, le preflight ne le réinitialise pas. */
-  h1, h2, h3 { letter-spacing: -0.03em; }
+     une règle font-weight posée ici sur h1/h2 serait donc écrasée.
+     Seul l'interlettrage tient, le preflight ne le réinitialise pas.
+     -0.025em = le tracking-tight que le site pose sur chacun de ses titres.
+     h3 est hors de la règle : le site ne resserre pas ses h3. */
+  h1, h2 { letter-spacing: -0.025em; }
   .eyebrow { font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
   /* Trame du hero, reprise du site */
   .trame {
@@ -256,7 +258,7 @@ const ctaBleu = (extra = "px-6 py-3.5 text-base") => `
 
 const titreSection = (eyebrow, titre, chapo, sombre = false) => `
   <p class="eyebrow reveal ${sombre ? 'text-primary-500' : 'text-primary-600'}">${e(eyebrow)}</p>
-  <h2 class="reveal mt-4 text-3xl sm:text-4xl font-extrabold ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
+  <h2 class="reveal mt-4 text-3xl md:text-4xl font-bold ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
   ${chapo ? `<p class="reveal mt-5 mx-auto max-w-2xl text-lg ${sombre ? 'text-slate-300' : 'text-slate-600'} leading-relaxed">${e(chapo)}</p>` : ``}`;
 
 const header = () => `
@@ -279,7 +281,7 @@ const hero = () => `
   <div class="absolute inset-0 trame"></div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center">
     <p class="eyebrow text-primary-500">${e(DATA.hero.eyebrow)}</p>
-    <h1 class="mt-6 mx-auto max-w-5xl text-4xl/[1.05] sm:text-5xl/[1.05] md:text-6xl/[1.05] font-extrabold text-white">
+    <h1 class="mt-6 mx-auto max-w-5xl text-4xl/[1.1] sm:text-5xl/none md:text-6xl/none font-bold text-white">
       ${DATA.hero.titre.map(l => `<span class="block">${e(l)}</span>`).join("")}
     </h1>
     <p class="mt-8 mx-auto max-w-2xl text-lg text-slate-300 leading-relaxed">${e(DATA.hero.chapo)}</p>
@@ -413,7 +415,7 @@ const final = () => `
 <section class="relative overflow-hidden bg-navy-800 py-20 lg:py-24">
   <div class="absolute inset-0 trame"></div>
   <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">${e(DATA.final.titre)}</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-white">${e(DATA.final.titre)}</h2>
     <p class="mt-6 mx-auto max-w-2xl text-lg text-slate-200 leading-relaxed">${e(DATA.final.chapo)}</p>
     <div class="mt-10">${ctaBleu("px-8 py-4 text-base")}</div>
     <p class="mt-4 text-sm text-slate-300">${e(DATA.cta.precision)}</p>
