@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automatisez vos ordres de transport | Cogity</title>
+<meta name="description" content="Vos ordres de transport passent du mail au TMS sans ressaisie. 80 % de saisie manuelle en moins, pilote en production en moins de 2 semaines. Réservez une démo de 30 minutes.">
+<meta property="og:title" content="Automatisez vos ordres de transport | Cogity">
+<meta property="og:description" content="Vos ordres de transport passent du mail au TMS sans ressaisie. Réservez une démo de 30 minutes.">
+<meta property="og:image" content="https://cogity.com/cogity-banner.png">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://cogity.com/cogity-logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* Tokens repris du site cogity.com : navy-950 #060D28, navy-800 #162D70,
+   primary-600 #2540EA, primary-50 #EFF3FF, échelle slate, accent transport #EA580C,
+   typographie Geist, rayons 8 et 12 px. */
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      navy:      { 950:'#060D28', 900:'#0B1740', 800:'#162D70' },
+      primary:   { 700:'#1E34C4', 600:'#2540EA', 500:'#6085FA', 50:'#EFF3FF' },
+      slate:     { 900:'#0F172A', 700:'#334155', 600:'#475569', 500:'#64748B', 400:'#94A3B8', 300:'#CBD5E1', 200:'#E2E8F0', 100:'#F1F5F9', 50:'#F8FAFC' },
+      transport: '#EA580C',
+      valide:    '#059669'
+    },
+    fontFamily: { sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'] },
+    maxWidth: { lisible: '68ch' }
+  }}
+}
+</script>
+<style>
+  html, body { overflow-x: hidden; max-width: 100%; }
+  html { scroll-behavior: smooth; }
+  h1, h2, h3 { font-weight: 700; letter-spacing: -0.025em; }
+  .eyebrow { font-size: .8125rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  /* Trame du hero, reprise du site */
+  .trame {
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .placeholder-video { background-image: repeating-linear-gradient(135deg, #162D70 0 14px, #0B1740 14px 28px); }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.vu { opacity: 1; transform: none; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #2540EA; outline-offset: 3px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+
+<body class="bg-white text-slate-900 font-sans antialiased">
+
+<noscript>
+  <div class="bg-primary-600 text-white p-4 text-center">
+    Activez JavaScript pour afficher cette page, ou écrivez-nous via cogity.com.
+  </div>
+</noscript>
+
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   1. DATA  ·  tout le contenu éditorial est ici, et nulle part ailleurs
+   ============================================================ */
+const DATA = {
+
+  campagne: { nom: "Outreach transport 2026", debut: "2026-09-15" },
+
+  marque: {
+    nom: "Cogity",
+    logoNoir:  "https://cogity.com/cogity-logo.png",
+    logoBlanc: "https://cdn.prod.website-files.com/68a5c3dd07199769270d9899/68bd9f67b84fe73564e8d492_logo-long-white.png",
+    site: "https://cogity.com/",
+    baseline: "Éditeur français de logiciels d'automatisation des opérations.",
+    hebergement: "Hébergé en France. SaaS ou on-premise.",
+    mentionsUrl: "https://cogity.com/",
+    confidentialiteUrl: "https://cogity.com/"
+  },
+
+  cta: {
+    libelle: "Réserver une démo",
+    url: "https://bookings.cloud.microsoft/book/CogityPrisedecontact@byfragment.com/?ismsaljsauthenabled=true",
+    precision: "Échange de 30 min, sans engagement."
+  },
+
+  hero: {
+    eyebrow: "Solution Transport",
+    titre: ["Moins de ressaisie.", "Plus de temps d'exploitation.", "Vos OT injectés dans votre TMS."],
+    chapo: "Un ordre de transport arrive par mail à 08 h 00. Il est dans votre TMS à 08 h 02, extrait et contrôlé, sans un seul copier-coller. Vos exploitants récupèrent environ 2 heures par jour.",
+    ctaSecondaire: { libelle: "Voir les témoignages", ancre: "#temoignages" },
+    pills: ["Compatible avec votre TMS actuel", "Hébergé en France ou on-premise", "Sans accès à votre boîte mail"],
+    chiffres: [
+      { valeur: "−80 %",  libelle: "de saisies manuelles sur les OT entrants" },
+      { valeur: "×3",     libelle: "de vitesse de traitement des ordres" },
+      { valeur: "< 2 sem.", libelle: "pour un premier pilote en production" }
+    ]
+  },
+
+  contraste: {
+    eyebrow: "Avant / Après",
+    titre: "Le même OT, deux journées différentes",
+    chapo: "Vos exploitants reçoivent des dossiers déjà structurés et contrôlés. Pas des PDF à saisir.",
+    avant: {
+      etiquette: "Aujourd'hui",
+      lignes: [
+        "OT reçu en PDF, en texte libre ou en Excel maison",
+        "Un exploitant le lit, le recopie, le vérifie",
+        "5 à 10 minutes par commande, plusieurs dizaines par jour",
+        "Une faute de frappe devient un appel client",
+        "L'écart se paie en litige à J+30"
+      ]
+    },
+    apres: {
+      etiquette: "Avec Cogity",
+      lignes: [
+        "Ingestion automatique, quel que soit le format",
+        "Extraction des références, adresses, masse et tarif",
+        "Contrôle de conformité et de complétude",
+        "Injection directe dans votre TMS via API",
+        "Validation humaine sur les seuls cas ambigus"
+      ]
+    }
+  },
+
+  flux: {
+    eyebrow: "Flux de traitement",
+    titre: "Du document brut à l'action métier en 5 étapes",
+    chapo: "Vous ajoutez une règle de transfert sur votre boîte de réception. Nous ne touchons pas à votre messagerie.",
+    etapes: [
+      { heure: "08 h 00", titre: "Réception",   detail: "OT, CMR ou BL en PDF, mail, EDI ou scan" },
+      { heure: "08 h 00", titre: "Extraction",  detail: "Champs clés structurés par les agents IA" },
+      { heure: "08 h 01", titre: "Contrôle",    detail: "Règles métier, complétude, référentiel client" },
+      { heure: "08 h 02", titre: "Injection",   detail: "Dossier créé dans votre TMS, sans rupture" },
+      { heure: "08 h 02", titre: "Supervision", detail: "Alerte temps réel sur anomalie" }
+    ],
+    conclusion: "Zéro ressaisie. Traçabilité complète. TMS alimenté en temps réel."
+  },
+
+  temoignages: {
+    eyebrow: "Ils l'ont mis en production",
+    titre: "Quatre métiers, quatre raisons d'avoir dit oui",
+    chapo: "Direction, exploitation, systèmes d'information : chacun raconte ce que l'automatisation a changé de son côté.",
+    /* videoUrl : URL d'intégration (YouTube, Vimeo, Loom). Laisser null tant que la
+       capsule n'est pas livrée : un cadre d'attente visible s'affiche à la place. */
+    items: [
+      {
+        role: "Directrice des systèmes d'information",
+        angle: "Sécurité et hébergement des données",
+        citation: "Nos exploitants passaient 2 à 3 heures par jour à ressaisir des OT. Aujourd'hui c'est automatique.",
+        auteur: "Isabelle Marie",
+        entreprise: "Le Roy Logistique",
+        videoUrl: null,
+        attente: "Capsule DSI · sécurité, hébergement, habilitations"
+      },
+      {
+        role: "Directeur des systèmes d'information",
+        angle: "Intégration au TMS existant",
+        citation: "Cogity est devenu un partenaire clé sur nos sujets d'IA et d'automatisation.",
+        auteur: "Nicolas Sorlin",
+        entreprise: "Évolutrans",
+        videoUrl: null,
+        attente: "Capsule DSI · facilité d'usage et connexion au TMS"
+      },
+      {
+        role: "Direction générale",
+        angle: "Productivité et retour sur investissement",
+        citation: "",
+        auteur: "",
+        entreprise: "",
+        videoUrl: null,
+        attente: "Capsule DG · gain de productivité chiffré"
+      },
+      {
+        role: "Responsable d'exploitation",
+        angle: "Simplicité de mise en place",
+        citation: "",
+        auteur: "",
+        entreprise: "",
+        videoUrl: null,
+        attente: "Capsule exploitation · mise en route au quotidien"
+      }
+    ]
+  },
+
+  preuve: {
+    eyebrow: "Résultats",
+    titre: "Des gains mesurables dès les premières semaines",
+    logos: [
+      { nom: "Évolutrans",        url: "https://cdn.prod.website-files.com/68a5c3dd07199769270d9899/68cc1738c251ccfb9fda7a37_evolutrans.png" },
+      { nom: "Bréger",            url: "https://www.breger.fr/wp-content/uploads/2024/07/logo-breger-1.svg" },
+      { nom: "Le Roy Logistique", url: null }
+    ],
+    chiffres: [
+      { valeur: "+20",     libelle: "transporteurs équipés" },
+      { valeur: "360 000", libelle: "OT traités automatiquement" },
+      { valeur: "−60 %",   libelle: "de litiges documentaires" },
+      { valeur: "98 %",    libelle: "de satisfaction client" }
+    ],
+    note: "Chiffres constatés sur des déploiements transport de 1 000 à 15 000 documents par mois. Données 2025 à 2026."
+  },
+
+  faq: {
+    eyebrow: "Questions fréquentes",
+    titre: "Les trois questions qu'on nous pose toujours",
+    items: [
+      {
+        q: "Faut-il changer de TMS ?",
+        r: "Non. Cogity se greffe par-dessus votre TMS actuel, quel qu'il soit, via API ou échange de fichiers. Nous ne remplaçons rien, nous alimentons ce que vous utilisez déjà."
+      },
+      {
+        q: "Qui a accès à nos données ?",
+        r: "Personne d'autre que vous. Les documents sont traités en France ou dans l'Union européenne, avec des rôles et habilitations par utilisateur et un journal d'audit opposable en cas de litige. Nous n'accédons jamais à votre boîte mail : vous mettez en place une règle de transfert vers une adresse dédiée."
+      },
+      {
+        q: "Combien de temps pour démarrer ?",
+        r: "Moins de deux semaines pour un premier pilote en production, sans refonte de votre système d'information. On commence par le flux qui vous coûte le plus cher, en général les OT entrants."
+      }
+    ]
+  },
+
+  final: {
+    titre: "Prêt à automatiser vos flux transport ?",
+    chapo: "On regarde ensemble votre volume de documents, vos formats et votre TMS. À l'issue de l'échange, vous savez combien d'heures cette automatisation vous rendrait."
+  },
+
+  /* Aucun identifiant en dur. Les tags ne se chargent qu'après consentement. */
+  tracking: { gtmId: "", metaPixelId: "" }
+};
+
+/* ============================================================
+   2. RENDU  ·  le code lit la data, jamais l'inverse
+   ============================================================ */
+const e = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const ctaBleu = (extra = "px-6 py-3.5 text-base") => `
+  <a href="${e(DATA.cta.url)}" target="_blank" rel="noopener" data-cta
+     class="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors ${extra}">
+    ${e(DATA.cta.libelle)}
+  </a>`;
+
+const titreSection = (eyebrow, titre, chapo, sombre = false) => `
+  <p class="eyebrow reveal ${sombre ? 'text-primary-500' : 'text-primary-600'}">${e(eyebrow)}</p>
+  <h2 class="reveal mt-4 text-3xl sm:text-4xl ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
+  ${chapo ? `<p class="reveal mt-5 mx-auto max-w-2xl text-lg ${sombre ? 'text-slate-300' : 'text-slate-600'} leading-relaxed">${e(chapo)}</p>` : ``}`;
+
+const header = () => `
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+    <a href="${e(DATA.marque.site)}" target="_blank" rel="noopener" class="flex items-center gap-2.5">
+      <img src="${e(DATA.marque.logoNoir)}" alt="" class="h-7 w-auto">
+      <span class="text-lg font-bold tracking-tight">COGITY</span>
+    </a>
+    <div class="flex items-center gap-6">
+      <a href="#temoignages" class="hidden md:inline text-sm text-slate-700 hover:text-primary-600">Témoignages</a>
+      <a href="#faq" class="hidden md:inline text-sm text-slate-700 hover:text-primary-600">Questions</a>
+      ${ctaBleu("px-4 py-2 text-sm")}
+    </div>
+  </div>
+</header>`;
+
+const hero = () => `
+<section class="relative overflow-hidden bg-navy-950">
+  <div class="absolute inset-0 trame"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center">
+    <p class="eyebrow text-primary-500">${e(DATA.hero.eyebrow)}</p>
+    <h1 class="mt-6 mx-auto max-w-4xl text-4xl sm:text-5xl md:text-6xl text-white leading-[1.05]">
+      ${DATA.hero.titre.map(l => `<span class="block">${e(l)}</span>`).join("")}
+    </h1>
+    <p class="mt-8 mx-auto max-w-2xl text-lg text-slate-300 leading-relaxed">${e(DATA.hero.chapo)}</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      ${ctaBleu("px-6 py-3.5 text-base")}
+      <a href="${e(DATA.hero.ctaSecondaire.ancre)}"
+         class="inline-flex items-center justify-center px-6 py-3.5 rounded-lg border border-white/25 text-white font-semibold hover:bg-white/10 transition-colors">
+        ${e(DATA.hero.ctaSecondaire.libelle)}
+      </a>
+    </div>
+    <p class="mt-4 text-sm text-slate-400">${e(DATA.cta.precision)}</p>
+    <div class="mt-10 flex flex-wrap justify-center gap-3">
+      ${DATA.hero.pills.map(p => `
+        <span class="rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-slate-200">${e(p)}</span>`).join("")}
+    </div>
+    <div class="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-10 border-t border-white/10 pt-12">
+      ${DATA.hero.chiffres.map(c => `
+        <div>
+          <div class="text-4xl font-bold text-white">${e(c.valeur)}</div>
+          <div class="mt-2 text-sm text-slate-400 leading-snug">${e(c.libelle)}</div>
+        </div>`).join("")}
+    </div>
+  </div>
+</section>`;
+
+const contraste = () => `
+<section class="bg-white py-20 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">${titreSection(DATA.contraste.eyebrow, DATA.contraste.titre, DATA.contraste.chapo)}</div>
+    <div class="mt-14 grid md:grid-cols-2 gap-6">
+      <div class="reveal rounded-xl border border-slate-200 bg-slate-50 p-8">
+        <div class="eyebrow text-slate-500">${e(DATA.contraste.avant.etiquette)}</div>
+        <ul class="mt-6 space-y-4">
+          ${DATA.contraste.avant.lignes.map(l => `
+            <li class="flex gap-3 text-slate-600"><span class="text-transport font-semibold">✕</span><span>${e(l)}</span></li>`).join("")}
+        </ul>
+      </div>
+      <div class="reveal rounded-xl border-l-4 border-l-primary-600 border border-slate-200 bg-primary-50 p-8">
+        <div class="eyebrow text-primary-600">${e(DATA.contraste.apres.etiquette)}</div>
+        <ul class="mt-6 space-y-4">
+          ${DATA.contraste.apres.lignes.map(l => `
+            <li class="flex gap-3 text-slate-700"><span class="text-valide font-semibold">✓</span><span>${e(l)}</span></li>`).join("")}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>`;
+
+const flux = () => `
+<section class="bg-slate-50 border-y border-slate-200 py-20 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">${titreSection(DATA.flux.eyebrow, DATA.flux.titre, DATA.flux.chapo)}</div>
+    <ol class="mt-14 grid gap-4 md:grid-cols-5">
+      ${DATA.flux.etapes.map(s => `
+        <li class="reveal rounded-xl border border-slate-200 bg-white p-6">
+          <div class="font-semibold text-primary-600 tabular-nums">${e(s.heure)}</div>
+          <div class="mt-3 font-semibold text-slate-900">${e(s.titre)}</div>
+          <div class="mt-2 text-sm text-slate-600 leading-relaxed">${e(s.detail)}</div>
+        </li>`).join("")}
+    </ol>
+    <p class="reveal mt-8 text-center text-slate-700 font-medium">${e(DATA.flux.conclusion)}</p>
+  </div>
+</section>`;
+
+const temoignages = () => `
+<section id="temoignages" class="bg-white py-20 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">${titreSection(DATA.temoignages.eyebrow, DATA.temoignages.titre, DATA.temoignages.chapo)}</div>
+    <div class="mt-14 grid md:grid-cols-2 gap-8">
+      ${DATA.temoignages.items.map(t => `
+        <figure class="reveal rounded-xl border border-slate-200 overflow-hidden bg-white">
+          <div class="aspect-video bg-navy-900">
+            ${t.videoUrl
+              ? `<iframe src="${e(t.videoUrl)}" title="Témoignage ${e(t.role)}" class="w-full h-full" loading="lazy" allowfullscreen frameborder="0"></iframe>`
+              : `<div class="placeholder-video w-full h-full flex flex-col items-center justify-center text-center p-6">
+                   <span class="rounded-full bg-transport px-3 py-1 text-xs font-semibold text-white">Vidéo à intégrer</span>
+                   <span class="mt-4 max-w-xs text-sm text-slate-200">${e(t.attente)}</span>
+                 </div>`}
+          </div>
+          <figcaption class="p-7">
+            <div class="font-semibold text-slate-900">${e(t.role)}</div>
+            <div class="mt-1 text-sm text-primary-600 font-medium">${e(t.angle)}</div>
+            ${t.citation ? `<blockquote class="mt-4 text-slate-600 leading-relaxed">« ${e(t.citation)} »</blockquote>` : ``}
+            ${t.auteur ? `<div class="mt-4 text-sm text-slate-500">${e(t.auteur)}, ${e(t.entreprise)}</div>` : ``}
+          </figcaption>
+        </figure>`).join("")}
+    </div>
+  </div>
+</section>`;
+
+const preuve = () => `
+<section class="bg-navy-950 py-20 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">${titreSection(DATA.preuve.eyebrow, DATA.preuve.titre, "", true)}</div>
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-6">
+      ${DATA.preuve.logos.map(l => l.url
+        ? `<img src="${e(l.url)}" alt="${e(l.nom)}" class="h-10 w-auto rounded-lg bg-white px-4 py-2">`
+        : `<span class="h-10 flex items-center rounded-lg border border-dashed border-transport px-4 text-sm text-transport">Logo ${e(l.nom)} à fournir</span>`
+      ).join("")}
+    </div>
+    <div class="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-10 border-t border-white/10 pt-12">
+      ${DATA.preuve.chiffres.map(c => `
+        <div class="reveal text-center">
+          <div class="text-3xl lg:text-4xl font-bold text-white">${e(c.valeur)}</div>
+          <div class="mt-2 text-sm text-slate-400 leading-snug">${e(c.libelle)}</div>
+        </div>`).join("")}
+    </div>
+    <p class="mt-10 text-center text-xs text-slate-500">${e(DATA.preuve.note)}</p>
+  </div>
+</section>`;
+
+const faq = () => `
+<section id="faq" class="bg-white py-20 lg:py-24">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">${titreSection(DATA.faq.eyebrow, DATA.faq.titre, "")}</div>
+    <div class="mt-12 mx-auto max-w-3xl">
+      ${DATA.faq.items.map(f => `
+        <details class="reveal group border-b border-slate-200 py-6">
+          <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-lg font-semibold">
+            ${e(f.q)}
+            <span class="text-primary-600 text-2xl leading-none group-open:hidden">+</span>
+            <span class="hidden text-primary-600 text-2xl leading-none group-open:inline">−</span>
+          </summary>
+          <p class="mt-4 text-slate-600 leading-relaxed">${e(f.r)}</p>
+        </details>`).join("")}
+    </div>
+  </div>
+</section>`;
+
+const final = () => `
+<section class="relative overflow-hidden bg-navy-800 py-20 lg:py-24">
+  <div class="absolute inset-0 trame"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl sm:text-4xl text-white">${e(DATA.final.titre)}</h2>
+    <p class="mt-6 mx-auto max-w-2xl text-lg text-slate-200 leading-relaxed">${e(DATA.final.chapo)}</p>
+    <div class="mt-10">${ctaBleu("px-8 py-4 text-base")}</div>
+    <p class="mt-4 text-sm text-slate-300">${e(DATA.cta.precision)}</p>
+  </div>
+</section>`;
+
+const footer = () => `
+<footer class="bg-navy-950 py-14 text-slate-400">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-end justify-between gap-8">
+    <div>
+      <img src="${e(DATA.marque.logoBlanc)}" alt="${e(DATA.marque.nom)}" class="h-8 w-auto">
+      <p class="mt-5 text-sm">${e(DATA.marque.baseline)}</p>
+      <p class="text-sm">${e(DATA.marque.hebergement)}</p>
+    </div>
+    <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm">
+      <a href="${e(DATA.marque.site)}" target="_blank" rel="noopener" class="hover:text-white">cogity.com</a>
+      <a href="${e(DATA.marque.mentionsUrl)}" target="_blank" rel="noopener" class="hover:text-white">Mentions légales</a>
+      <a href="${e(DATA.marque.confidentialiteUrl)}" target="_blank" rel="noopener" class="hover:text-white">Politique de confidentialité</a>
+      <span>© ${new Date().getFullYear()} ${e(DATA.marque.nom)}</span>
+    </div>
+  </div>
+</footer>`;
+
+document.getElementById('app').innerHTML =
+  header() + `<main>` + hero() + contraste() + flux() + temoignages() + preuve() + faq() + final() + `</main>` + footer();
+
+/* ============================================================
+   3. COMPORTEMENTS
+   ============================================================ */
+const obs = new IntersectionObserver((entrees) => {
+  entrees.forEach(x => { if (x.isIntersecting) { x.target.classList.add('vu'); obs.unobserve(x.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const utm = {};
+new URLSearchParams(location.search).forEach((v, k) => { if (k.startsWith('utm_')) utm[k] = v; });
+
+window.dataLayer = window.dataLayer || [];
+document.querySelectorAll('[data-cta]').forEach(a => {
+  a.addEventListener('click', () => {
+    window.dataLayer.push({
+      event: 'demo_click',
+      campaign: DATA.campagne.nom,
+      source_url: location.href,
+      timestamp: new Date().toISOString(),
+      ...utm
+    });
+  });
+});
+
+/* ============================================================
+   4. CONSENTEMENT ET TAGS
+   ============================================================ */
+function chargerTags() {
+  if (DATA.tracking.gtmId) {
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})
+    (window,document,'script','dataLayer',DATA.tracking.gtmId);
+  }
+}
+
+(function banniere() {
+  if (!DATA.tracking.gtmId && !DATA.tracking.metaPixelId) return;
+  const choix = localStorage.getItem('cogity_consent');
+  if (choix === 'ok') { chargerTags(); return; }
+  if (choix === 'non') return;
+
+  const b = document.createElement('div');
+  b.className = 'fixed bottom-0 inset-x-0 z-50 border-t border-slate-200 bg-white p-5 shadow-lg';
+  b.innerHTML = `
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <p class="text-sm text-slate-600 max-w-lisible">
+        Nous utilisons des cookies de mesure d'audience pour savoir quelles pages sont consultées.
+        Aucun cookie n'est déposé sans votre accord.
+      </p>
+      <div class="flex gap-3 shrink-0">
+        <button data-refus class="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium">Refuser</button>
+        <button data-accord class="rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white">Accepter</button>
+      </div>
+    </div>`;
+  document.body.appendChild(b);
+  b.querySelector('[data-accord]').onclick = () => { localStorage.setItem('cogity_consent','ok'); chargerTags(); b.remove(); };
+  b.querySelector('[data-refus]').onclick  = () => { localStorage.setItem('cogity_consent','non'); b.remove(); };
+})();
+</script>
+</body>
+</html>
