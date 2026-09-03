@@ -147,24 +147,29 @@ const DATA = {
     titre: "Qui est Cogity",
     chapo: "Une équipe qui connaît le transport de l'intérieur et l'automatisation par la pratique.",
     /* photoUrl : portrait carré ou vertical. Laisser null tant que la photo
-       n'est pas livrée : une zone d'attente visible s'affiche à la place. */
+       n'est pas livrée : une zone d'attente visible s'affiche à la place.
+       role/parcours : à confirmer avec les fondateurs, LinkedIn ne peut pas
+       être extrait automatiquement (accès authentifié requis). */
     items: [
       {
-        nom: "Prénom Nom",
-        role: "Co-fondateur, CEO",
+        nom: "Florent Noury",
+        role: "Co-fondateur",
         parcours: "Parcours à compléter : postes précédents, expertise sectorielle, réalisations clés.",
+        linkedinUrl: "https://www.linkedin.com/in/florent-noury-ai-agents/",
         photoUrl: null
       },
       {
-        nom: "Prénom Nom",
-        role: "Co-fondateur, CTO",
+        nom: "Aldo Kei Taud",
+        role: "Co-fondateur",
         parcours: "Parcours à compléter : expérience technique, produits ou entreprises précédentes.",
+        linkedinUrl: "https://www.linkedin.com/in/aldo-kei-taud-2a39b32b/",
         photoUrl: null
       },
       {
-        nom: "Prénom Nom",
-        role: "Co-fondateur, COO",
+        nom: "Victor Favreau",
+        role: "Co-fondateur",
         parcours: "Parcours à compléter : expérience opérationnelle, expertise transport et logistique.",
+        linkedinUrl: "https://www.linkedin.com/in/victor-favreau-41b823117/",
         photoUrl: null
       }
     ]
@@ -387,6 +392,7 @@ const fondateurs = () => {
           <div class="mt-6 font-semibold text-slate-900 text-lg">${e(f.nom)}</div>
           <div class="mt-1 text-sm text-primary-600 font-medium">${e(f.role)}</div>
           <p class="mt-4 text-sm text-slate-600 leading-relaxed">${e(f.parcours)}</p>
+          ${f.linkedinUrl ? `<a href="${e(f.linkedinUrl)}" target="_blank" rel="noopener" class="mt-4 inline-block text-sm font-medium text-primary-600 hover:text-primary-700">Voir le profil LinkedIn →</a>` : ``}
         </div>`).join("")}
     </div>
   </div>
