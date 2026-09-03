@@ -162,30 +162,28 @@ const DATA = {
     chapo: "Une équipe qui connaît le transport de l'intérieur et l'automatisation par la pratique.",
     /* photoUrl : portrait carré ou vertical. Laisser null tant que la photo
        n'est pas livrée : une zone d'attente visible s'affiche à la place.
-       role/parcours : reconstitués à partir d'informations publiques
-       (résultats de recherche indexant les profils LinkedIn ; LinkedIn
-       lui-même ne peut pas être consulté directement sans authentification).
-       À faire valider par chaque fondateur avant mise en ligne définitive. */
+       role/parcours : le texte de Florent vient de lui directement. Ceux
+       d'Aldo et Victor sont encore reconstitués à partir d'informations
+       publiques (résultats de recherche indexant leurs profils LinkedIn ;
+       LinkedIn lui-même est inaccessible depuis cet environnement) et
+       restent à remplacer par leur propre texte. */
     items: [
       {
         nom: "Florent Noury",
-        role: "Co-fondateur, CEO",
-        parcours: "Diplômé de Rennes School of Business (Executive MBA), a occupé des postes chez Hewlett Packard Enterprise et BLUE avant de cofonder Cogity.",
-        linkedinUrl: "https://www.linkedin.com/in/florent-noury-ai-agents/",
+        role: "Co-fondateur",
+        parcours: "Basé à Rennes, 12 ans d'expérience B2B chez HPE et Blue, entre approche terrain, produit et go-to-market. Convaincu par l'impact concret de l'IA en entreprise, engagé dans l'écosystème tech.",
         photoUrl: null
       },
       {
         nom: "Aldo Kei Taud",
         role: "Co-fondateur, CMO",
         parcours: "Diplômé de l'ESC Rennes (Rennes School of Business), en charge du marketing et du développement commercial de Cogity.",
-        linkedinUrl: "https://www.linkedin.com/in/aldo-kei-taud-2a39b32b/",
         photoUrl: null
       },
       {
         nom: "Victor Favreau",
         role: "Co-fondateur, CTO",
         parcours: "Pilote la technologie de Cogity : IA appliquée à l'entreprise, agents IA et automatisation.",
-        linkedinUrl: "https://www.linkedin.com/in/victor-favreau-41b823117/",
         photoUrl: null
       }
     ]
@@ -421,7 +419,6 @@ const fondateurs = () => {
           <div class="mt-6 font-semibold text-slate-900 text-lg">${e(f.nom)}</div>
           <div class="mt-1 text-sm text-primary-600 font-medium">${e(f.role)}</div>
           <p class="mt-4 text-sm text-slate-600 leading-relaxed">${e(f.parcours)}</p>
-          ${f.linkedinUrl ? `<a href="${e(f.linkedinUrl)}" target="_blank" rel="noopener" class="mt-4 inline-block text-sm font-medium text-primary-600 hover:text-primary-700">Voir le profil LinkedIn →</a>` : ``}
         </div>`).join("")}
     </div>
   </div>
