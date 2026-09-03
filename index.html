@@ -37,8 +37,10 @@ tailwind.config = {
 }
 </script>
 <style>
-  html, body { overflow-x: hidden; max-width: 100%; }
-  html { scroll-behavior: smooth; }
+  /* overflow-x reste uniquement sur html : le poser aussi sur body transforme
+     body en conteneur de scroll et casse position:sticky sur le header. */
+  html { overflow-x: hidden; scroll-behavior: smooth; }
+  body { max-width: 100%; }
   /* La graisse des titres est posée en classe utilitaire (font-bold) :
      le preflight Tailwind applique h1-h6 { font-weight: inherit }, et son CSS,
      injecté par le CDN à l'exécution, passe après ce bloc dans la cascade —
