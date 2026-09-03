@@ -256,6 +256,14 @@ const ctaBleu = (extra = "px-6 py-3.5 text-base") => `
     ${e(DATA.cta.libelle)}
   </a>`;
 
+const ctaMilieu = (texte) => `
+<section class="bg-slate-50 border-y border-slate-200 py-14">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p class="reveal text-lg font-semibold text-slate-900">${e(texte)}</p>
+    <div class="reveal mt-6">${ctaBleu("px-6 py-3.5 text-base")}</div>
+  </div>
+</section>`;
+
 const titreSection = (eyebrow, titre, chapo, sombre = false) => `
   <p class="eyebrow reveal ${sombre ? 'text-primary-500' : 'text-primary-600'}">${e(eyebrow)}</p>
   <h2 class="reveal mt-4 text-3xl md:text-4xl font-bold ${sombre ? 'text-white' : 'text-slate-900'}">${e(titre)}</h2>
@@ -440,7 +448,13 @@ const footer = () => `
 </footer>`;
 
 document.getElementById('app').innerHTML =
-  header() + `<main>` + hero() + contraste() + flux() + temoignages() + preuve() + faq() + final() + `</main>` + footer();
+  header() + `<main>` + hero() + contraste()
+  + ctaMilieu("Envie de voir ce que ça donne sur vos propres flux ?")
+  + flux() + temoignages()
+  + ctaMilieu("Convaincu par leurs retours ? Parlons de votre cas.")
+  + preuve()
+  + ctaMilieu("Rejoignez les équipes qui ont déjà automatisé leurs flux transport.")
+  + faq() + final() + `</main>` + footer();
 
 /* ============================================================
    3. COMPORTEMENTS
