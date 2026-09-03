@@ -103,6 +103,20 @@ const DATA = {
     precision: "Échange de 30 min, sans engagement."
   },
 
+  reassurance: {
+    texte: "Ils accompagnent Cogity",
+    /* url : logo officiel du partenaire, de l'incubateur ou du label. Laisser
+       null tant qu'il n'est pas fourni : un encart d'attente s'affiche à la
+       place. Liste à confirmer avec l'équipe Cogity (incubateur, Bpifrance,
+       labels French Tech, partenaires technologiques ou financiers…). */
+    logos: [
+      { nom: "Incubateur", url: null },
+      { nom: "Bpifrance", url: null },
+      { nom: "French Tech", url: null },
+      { nom: "Partenaire technologique", url: null }
+    ]
+  },
+
   hero: {
     eyebrow: "Solution Transport",
     titre: ["Moins de ressaisie.", "Plus de temps d’exploitation.", "Vos OT injectés dans votre TMS."],
@@ -346,6 +360,19 @@ const hero = () => `
   </div>
 </section>`;
 
+const reassurance = () => `
+<section class="bg-white border-y border-slate-200 py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="reveal eyebrow text-center text-slate-500">${e(DATA.reassurance.texte)}</p>
+    <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+      ${DATA.reassurance.logos.map(l => l.url
+        ? `<img src="${e(l.url)}" alt="${e(l.nom)}" class="h-9 w-auto grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition">`
+        : `<span class="h-10 flex items-center rounded-lg border border-dashed border-transport px-4 text-sm text-transport">Logo ${e(l.nom)} à fournir</span>`
+      ).join("")}
+    </div>
+  </div>
+</section>`;
+
 const contraste = () => `
 <section class="bg-white py-20 lg:py-24">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -503,7 +530,7 @@ const footer = () => `
 </footer>`;
 
 document.getElementById('app').innerHTML =
-  header() + `<main>` + hero() + contraste()
+  header() + `<main>` + hero() + reassurance() + contraste()
   + ctaMilieu("Envie de voir ce que ça donne sur vos propres flux ?")
   + fondateurs()
   + flux() + temoignages()
