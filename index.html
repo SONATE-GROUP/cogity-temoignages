@@ -182,6 +182,13 @@ const DATA = {
         parcours: "7 ans de développement et d'architecture logicielle chez Blue et IMA Technologies, certifié NVIDIA en IA générative.",
         photoUrl: "assets/fondateurs/victor-favreau.jpeg"
       }
+    ],
+    /* badges : réassurance institutionnelle, en texte faute de fichiers
+       logo officiels. À remplacer par de vrais logos si fournis. */
+    badges: [
+      "Incubée à Laval Mayenne Technopole",
+      "Membre du programme NVIDIA Inception",
+      "Référencée au Mapping 2026 des startups IA — France Digitale"
     ]
   },
 
@@ -419,6 +426,10 @@ const fondateurs = () => {
           <div class="mt-1 text-sm text-primary-600 font-medium">${e(f.role)}</div>
           <p class="mt-4 text-sm text-slate-600 leading-relaxed">${e(f.parcours)}</p>
         </div>`).join("")}
+    </div>
+    <div class="reveal mt-10 flex flex-wrap items-center justify-center gap-3">
+      ${DATA.fondateurs.badges.map(b => `
+        <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-medium text-slate-600">${e(b)}</span>`).join("")}
     </div>
   </div>
 </section>`;
