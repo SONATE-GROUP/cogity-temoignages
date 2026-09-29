@@ -60,9 +60,6 @@
       linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
     background-size: 64px 64px;
   }
-  /* Contenu en attente de validation par Cogity : surbrillance volontairement
-     hors charte, pour qu'aucun placeholder ne parte en ligne sans être vu. */
-  .a-valider { background: #FDE047; color: #060D28; padding: 0 .25em; border-radius: 3px; }
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.vu { opacity: 1; transform: none; }
   a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #2540EA; outline-offset: 3px; border-radius: 4px; }
@@ -88,17 +85,14 @@
    1. DATA  ·  tout le contenu éditorial est ici, et nulle part ailleurs
    ============================================================ */
 /* Chiffres clés : UNE seule source pour toute la page (bande sous le hero).
-   Tant que Cogity ne les a pas validés, aValider: true les affiche en jaune.
-   Pour valider un chiffre : corriger valeur, puis passer aValider à false. */
+   Chiffres validés par Cogity. */
 const CHIFFRES = {
   items: [
-    { valeur: "[X] %",     libelle: "de saisies manuelles en moins sur les OT entrants", aValider: true },
-    { valeur: "~2 h",      libelle: "gagnées par jour et par exploitant",               aValider: true },
-    { valeur: "< 2 sem.",  libelle: "pour un premier pilote en production",             aValider: true },
-    { valeur: "[X]",       libelle: "transporteurs équipés",                            aValider: true }
-  ],
-  source: "[SOURCE DES CHIFFRES À VALIDER]",
-  sourceAValider: true
+    { valeur: "−80¤%",     libelle: "de saisies manuelles sur les OT entrants" },
+    { valeur: "~2¤h",      libelle: "gagnées par jour et par exploitant" },
+    { valeur: "<¤2¤sem.",  libelle: "pour un premier pilote en production" },
+    { valeur: "+20",       libelle: "transporteurs équipés" }
+  ]
 };
 
 /* GTM : laisser vide tant qu'aucun conteneur n'est prévu. Renseigné
@@ -110,13 +104,6 @@ const GTM_ID = "";
 
 /* Paramètres de campagne conservés pendant la visite (noms normalisés, jamais traduits). */
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-
-/* Réservation et alternative légère. Tant qu'une valeur est vide ou vaut
-   *_A_RENSEIGNER, un placeholder jaune s'affiche à sa place. */
-const CONVERSION = {
-  calendarUrl: "CALENDAR_URL_A_RENSEIGNER",
-  emailOT:     "EMAIL_A_RENSEIGNER"
-};
 
 const DATA = {
 
@@ -297,34 +284,19 @@ const DATA = {
       {
         q: "Combien de temps pour démarrer ?",
         r: "Moins de deux semaines pour un premier pilote en production, sans refonte de votre système d’information. On commence par le flux qui vous coûte le plus cher, en général les OT entrants."
-      },
-      {
-        q: "Quels TMS sont compatibles ?",
-        r: "[RÉPONSE À FOURNIR PAR COGITY]",
-        aValider: true
-      },
-      {
-        q: "Comment se passe le pilote, et combien ça coûte ?",
-        r: "[RÉPONSE À FOURNIR PAR COGITY]",
-        aValider: true
       }
     ]
   },
 
   final: {
     titre: "Prêt à automatiser vos flux transport ?",
-    chapo: "On regarde ensemble votre volume de documents, vos formats et votre TMS. À l’issue de l’échange, vous savez combien d’heures cette automatisation vous rendrait.",
-    alternative: "Pas le temps d'une démo ? Envoyez-nous un de vos OT, on vous renvoie le résultat extrait.",
-    sujetMail: "Test Cogity sur un de nos OT"
+    chapo: "On regarde ensemble votre volume de documents, vos formats et votre TMS. À l’issue de l’échange, vous savez combien d’heures cette automatisation vous rendrait."
   },
 };
 
 /* ============================================================
    2. RENDU  ·  le code lit la data, jamais l'inverse
    ============================================================ */
-const aValider = (v) => v && v.aValider;
-const renseigne = (v) => !!v && !/_A_RENSEIGNER$/.test(v);
-
 /* Contexte de visite : UTM (URL, sinon session) et persona (?p=). */
 const UTM = (() => {
   const depuisUrl = {};
@@ -341,26 +313,7 @@ const PERSONA = (() => {
   return p && Object.prototype.hasOwnProperty.call(DATA.hero.chapoParPersona, p) ? p : null;
 })();
 
-/* URL du calendrier, UTM ajoutés en paramètres. */
-const urlCalendrier = () => {
-  try {
-    const u = new URL(CONVERSION.calendarUrl);
-    Object.entries(UTM).forEach(([k, v]) => u.searchParams.set(k, v));
-    return u.toString();
-  } catch (err) { return CONVERSION.calendarUrl; }
-};
-/* mailto : UTM en fin de corps, pour savoir quel message de la séquence a converti. */
-const urlMailto = () => {
-  const dest = renseigne(CONVERSION.emailOT) ? CONVERSION.emailOT : '';
-  const lignes = Object.entries(UTM).map(([k, v]) => `${k}=${v}`);
-  const corps = lignes.length ? `\n\n\n---\n${lignes.join('\n')}` : '';
-  return `mailto:${dest}?subject=${encodeURIComponent(DATA.final.sujetMail)}`
-    + (corps ? `&body=${encodeURIComponent(corps)}` : '');
-};
-
 const e = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-
-const placeholder = (texte) => `<span class="a-valider font-semibold">${e(texte)}</span>`;
 
 /* Tous les boutons "Réserver une démo" descendent vers la section finale #demo. */
 const ctaBleu = (libelle, extra = "px-6 py-3.5 text-base", href = "#demo", externe = false) => `
@@ -414,11 +367,10 @@ const hero = () => `
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
         ${CHIFFRES.items.map(c => `
           <div>
-            <div class="text-3xl sm:text-4xl font-extrabold text-white whitespace-nowrap"><span class="${c.aValider ? 'a-valider !text-navy-950' : ''}">${e(c.valeur)}</span></div>
+            <div class="text-3xl sm:text-4xl font-extrabold text-white whitespace-nowrap">${e(c.valeur)}</div>
             <div class="mt-2 text-sm text-slate-400 leading-snug">${e(c.libelle)}</div>
           </div>`).join("")}
       </div>
-      <p class="mt-8 text-xs text-slate-400">${CHIFFRES.sourceAValider ? placeholder(CHIFFRES.source) : e(CHIFFRES.source)}</p>
     </div>
   </div>
 </section>`;
@@ -539,7 +491,7 @@ const faq = () => `
             <span class="text-primary-600 text-2xl leading-none group-open:hidden">+</span>
             <span class="hidden text-primary-600 text-2xl leading-none group-open:inline">−</span>
           </summary>
-          <p class="mt-4 text-slate-600 leading-relaxed">${aValider(f) ? placeholder(f.r) : e(f.r)}</p>
+          <p class="mt-4 text-slate-600 leading-relaxed">${e(f.r)}</p>
         </details>`).join("")}
     </div>
   </div>
@@ -554,19 +506,6 @@ const final = () => `
     <!-- Déjà dans la section : ce bouton-là ouvre la prise de RDV Bookings dans un nouvel onglet. -->
     <div class="mt-10">${ctaBleu(DATA.cta.libelles.final, "px-8 py-4 text-base", DATA.cta.url, true)}</div>
     <p class="mt-4 text-sm text-slate-300">${e(DATA.cta.precision)}</p>
-    <div id="calendrier" class="mt-12 mx-auto max-w-4xl overflow-hidden rounded-xl bg-white">
-      ${renseigne(CONVERSION.calendarUrl)
-        ? `<iframe src="${e(urlCalendrier())}" title="Réserver une démo Cogity" loading="lazy" class="block w-full h-[760px] border-0"></iframe>`
-        : `<div class="flex h-72 flex-col items-center justify-center gap-3 border-2 border-dashed border-transport p-6 text-center">
-             ${placeholder("CALENDAR_URL_A_RENSEIGNER")}
-             <span class="text-sm text-slate-600">Le calendrier de réservation s’affichera ici.</span>
-           </div>`}
-    </div>
-    <p class="mt-10 text-slate-200">
-      <a href="${e(urlMailto())}" data-cta-alt
-         class="font-semibold underline underline-offset-4 decoration-white/40 hover:decoration-white">${e(DATA.final.alternative)}</a>
-      ${renseigne(CONVERSION.emailOT) ? `` : `<span class="mt-2 block">${placeholder("EMAIL_A_RENSEIGNER")}</span>`}
-    </p>
   </div>
 </section>`;
 
