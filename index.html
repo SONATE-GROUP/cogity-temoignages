@@ -57,7 +57,6 @@ tailwind.config = {
       linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
     background-size: 64px 64px;
   }
-  .placeholder-video { background-image: repeating-linear-gradient(135deg, #162D70 0 14px, #0B1740 14px 28px); }
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.vu { opacity: 1; transform: none; }
   a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid #2540EA; outline-offset: 3px; border-radius: 4px; }
@@ -121,7 +120,6 @@ const DATA = {
     eyebrow: "Solution Transport",
     titre: ["Moins de ressaisie.", "Plus de temps d’exploitation.", "Vos OT injectés dans votre TMS."],
     chapo: "Un ordre de transport arrive par mail à 08 h 00. Il est dans votre TMS à 08 h 02, extrait et contrôlé, sans un seul copier-coller. Vos exploitants récupèrent environ 2 heures par jour.",
-    ctaSecondaire: { libelle: "Voir les témoignages", ancre: "#temoignages" },
     pills: ["Compatible avec votre TMS actuel", "Hébergé en France ou on-premise", "Sans accès à votre boîte mail"],
     chiffres: [
       { valeur: "−80 %",  libelle: "de saisies manuelles sur les OT entrants" },
@@ -205,52 +203,6 @@ const DATA = {
     conclusion: "Zéro ressaisie. Traçabilité complète. TMS alimenté en temps réel."
   },
 
-  temoignages: {
-    eyebrow: "Ils l'ont mis en production",
-    titre: "Quatre métiers, quatre raisons d'avoir dit oui",
-    chapo: "Direction, exploitation, systèmes d'information : chacun raconte ce que l'automatisation a changé de son côté.",
-    /* videoUrl : URL d'intégration (YouTube, Vimeo, Loom). Laisser null tant que la
-       capsule n'est pas livrée : un cadre d'attente visible s'affiche à la place. */
-    items: [
-      {
-        role: "Directrice des systèmes d'information",
-        angle: "Sécurité et hébergement des données",
-        citation: "Nos exploitants passaient 2 à 3 heures par jour à ressaisir des OT. Aujourd'hui c'est automatique.",
-        auteur: "Isabelle Marie",
-        entreprise: "Le Roy Logistique",
-        videoUrl: null,
-        attente: "Capsule DSI · sécurité, hébergement, habilitations"
-      },
-      {
-        role: "Directeur des systèmes d'information",
-        angle: "Intégration au TMS existant",
-        citation: "Cogity est devenu un partenaire clé sur nos sujets d'IA et d'automatisation.",
-        auteur: "Nicolas Sorlin",
-        entreprise: "Évolutrans",
-        videoUrl: null,
-        attente: "Capsule DSI · facilité d'usage et connexion au TMS"
-      },
-      {
-        role: "Direction générale",
-        angle: "Productivité et retour sur investissement",
-        citation: "",
-        auteur: "",
-        entreprise: "",
-        videoUrl: null,
-        attente: "Capsule DG · gain de productivité chiffré"
-      },
-      {
-        role: "Responsable d'exploitation",
-        angle: "Simplicité de mise en place",
-        citation: "",
-        auteur: "",
-        entreprise: "",
-        videoUrl: null,
-        attente: "Capsule exploitation · mise en route au quotidien"
-      }
-    ]
-  },
-
   preuve: {
     eyebrow: "Résultats",
     titre: "Des gains mesurables dès les premières semaines",
@@ -327,12 +279,7 @@ const header = () => `
       <img src="${e(DATA.marque.logoNoir)}" alt="" class="h-7 w-auto">
       <span class="text-lg font-bold tracking-tight">COGITY</span>
     </a>
-    <div class="flex items-center gap-6">
-      <a href="#fondateurs" class="hidden md:inline text-sm text-slate-700 hover:text-primary-600">Équipe</a>
-      <a href="#temoignages" class="hidden md:inline text-sm text-slate-700 hover:text-primary-600">Témoignages</a>
-      <a href="#faq" class="hidden md:inline text-sm text-slate-700 hover:text-primary-600">Questions</a>
-      ${ctaBleu("px-4 py-2 text-sm")}
-    </div>
+    ${ctaBleu("px-4 py-2 text-sm")}
   </div>
 </header>`;
 
@@ -347,10 +294,6 @@ const hero = () => `
     <p class="mt-8 mx-auto max-w-2xl text-lg text-slate-300 leading-relaxed">${e(DATA.hero.chapo)}</p>
     <div class="mt-10 flex flex-wrap justify-center gap-4">
       ${ctaBleu("px-6 py-3.5 text-base")}
-      <a href="${e(DATA.hero.ctaSecondaire.ancre)}"
-         class="inline-flex items-center justify-center px-6 py-3.5 rounded-lg border border-white/25 text-white font-semibold hover:bg-white/10 transition-colors">
-        ${e(DATA.hero.ctaSecondaire.libelle)}
-      </a>
     </div>
     <p class="mt-4 text-sm text-slate-400">${e(DATA.cta.precision)}</p>
     <div class="mt-10 flex flex-wrap justify-center gap-3">
@@ -452,32 +395,6 @@ const flux = () => `
   </div>
 </section>`;
 
-const temoignages = () => `
-<section id="temoignages" class="bg-white py-20 lg:py-24">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center">${titreSection(DATA.temoignages.eyebrow, DATA.temoignages.titre, DATA.temoignages.chapo)}</div>
-    <div class="mt-14 grid md:grid-cols-2 gap-8">
-      ${DATA.temoignages.items.map(t => `
-        <figure class="reveal rounded-xl border border-slate-200 overflow-hidden bg-white">
-          <div class="aspect-video bg-navy-900">
-            ${t.videoUrl
-              ? `<iframe src="${e(t.videoUrl)}" title="Témoignage ${e(t.role)}" class="w-full h-full" loading="lazy" allowfullscreen frameborder="0"></iframe>`
-              : `<div class="placeholder-video w-full h-full flex flex-col items-center justify-center text-center p-6">
-                   <span class="rounded-full bg-transport px-3 py-1 text-xs font-semibold text-white">Vidéo à intégrer</span>
-                   <span class="mt-4 max-w-xs text-sm text-slate-200">${e(t.attente)}</span>
-                 </div>`}
-          </div>
-          <figcaption class="p-7">
-            <div class="font-semibold text-slate-900">${e(t.role)}</div>
-            <div class="mt-1 text-sm text-primary-600 font-medium">${e(t.angle)}</div>
-            ${t.citation ? `<blockquote class="mt-4 text-slate-600 leading-relaxed">« ${e(t.citation)} »</blockquote>` : ``}
-            ${t.auteur ? `<div class="mt-4 text-sm text-slate-500">${e(t.auteur)}, ${e(t.entreprise)}</div>` : ``}
-          </figcaption>
-        </figure>`).join("")}
-    </div>
-  </div>
-</section>`;
-
 const preuve = () => `
 <section class="bg-navy-950 py-20 lg:py-24">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -551,8 +468,8 @@ document.getElementById('app').innerHTML =
   header() + `<main>` + hero() + reassurance() + contraste()
   + ctaMilieu("Envie de voir ce que ça donne sur vos propres flux ?")
   + fondateurs()
-  + flux() + temoignages()
-  + ctaMilieu("Convaincu par leurs retours ? Parlons de votre cas.")
+  + flux()
+  + ctaMilieu("Vous voulez voir ce que ça donne sur vos propres OT ? Parlons de votre cas.")
   + preuve()
   + ctaMilieu("Rejoignez les équipes qui ont déjà automatisé leurs flux transport.")
   + faq() + final() + `</main>` + footer();
