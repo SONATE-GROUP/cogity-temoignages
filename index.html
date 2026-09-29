@@ -135,7 +135,18 @@ const DATA = {
   },
 
   cta: {
-    libelle: "Réserver une démo",
+    /* Libellés des boutons, tous < 40 caractères. Le lien ne change pas :
+       tous descendent vers #demo, sauf "final" qui ouvre la prise de RDV (url).
+       Avec ?p=, le bouton du hero reprend le libellé cta de la carte du persona. */
+    libelles: {
+      header: "Réserver une démo",
+      hero:   "Voir Cogity sur mes OT",
+      milieu: "Voir ce que ça donne sur mes flux",
+      final:  "Choisir mon créneau"
+    },
+    /* Microcopie : texte d'accroche du CTA intermédiaire, et lignes sous les boutons. */
+    milieuTexte: "Vous voulez voir ce que ça donne sur vos propres OT ? Parlons de votre cas.",
+    precisionHero: "30 min, sur vos propres documents, sans engagement.",
     url: "https://bookings.cloud.microsoft/book/CogityPrisedecontact@byfragment.com/?ismsaljsauthenabled=true",
     precision: "Échange de 30 min, sans engagement."
   },
@@ -250,18 +261,21 @@ const DATA = {
       {
         id: "dg",
         persona: "Direction générale",
+        cta: "Chiffrer le gain pour mon équipe",
         titre: "Plus de commandes traitées, sans recruter",
         texte: "Vos exploitants passent leur temps sur l'exploitation, plus sur la ressaisie. Le gain se mesure dès le pilote, sur vos propres flux."
       },
       {
         id: "exploitation",
         persona: "Responsable d'exploitation",
+        cta: "Voir un OT traité en direct",
         titre: "Zéro copier-coller dans le TMS",
         texte: "Les OT arrivent déjà extraits et contrôlés. Vous ne validez que les cas ambigus. Mise en route sans changer vos habitudes."
       },
       {
         id: "dsi",
         persona: "DSI",
+        cta: "Échanger avec notre CTO",
         titre: "Aucun projet IT lourd",
         texte: "Intégration à votre TMS actuel via API, hébergement en France ou on-premise, aucun accès à vos boîtes mail : une simple règle de transfert suffit."
       }
@@ -349,17 +363,17 @@ const e = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 const placeholder = (texte) => `<span class="a-valider font-semibold">${e(texte)}</span>`;
 
 /* Tous les boutons "Réserver une démo" descendent vers la section finale #demo. */
-const ctaBleu = (extra = "px-6 py-3.5 text-base", href = "#demo", externe = false) => `
+const ctaBleu = (libelle, extra = "px-6 py-3.5 text-base", href = "#demo", externe = false) => `
   <a href="${e(href)}"${externe ? ` target="_blank" rel="noopener"` : ``} data-cta
      class="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors ${extra}">
-    ${e(DATA.cta.libelle)}
+    ${e(libelle)}
   </a>`;
 
-const ctaMilieu = (texte) => `
+const ctaMilieu = (texte, libelle) => `
 <section class="bg-slate-50 border-y border-slate-200 py-14">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <p class="reveal text-lg font-semibold text-slate-900">${e(texte)}</p>
-    <div class="reveal mt-6">${ctaBleu("px-6 py-3.5 text-base")}</div>
+    <div class="reveal mt-6">${ctaBleu(libelle, "px-6 py-3.5 text-base")}</div>
   </div>
 </section>`;
 
@@ -375,7 +389,7 @@ const header = () => `
       <img src="${e(DATA.marque.icone)}" alt="" class="h-7 w-auto">
       <span class="text-lg font-bold tracking-tight">COGITY</span>
     </a>
-    ${ctaBleu("px-4 py-2 text-sm")}
+    ${ctaBleu(DATA.cta.libelles.header, "px-4 py-2 text-sm")}
   </div>
 </header>`;
 
@@ -389,9 +403,9 @@ const hero = () => `
     </h1>
     <p class="mt-8 mx-auto max-w-2xl text-lg text-slate-300 leading-relaxed">${e(PERSONA ? DATA.hero.chapoParPersona[PERSONA] : DATA.hero.chapo)}</p>
     <div class="mt-10 flex flex-wrap justify-center gap-4">
-      ${ctaBleu("px-6 py-3.5 text-base")}
+      ${ctaBleu(PERSONA ? DATA.personas.items.find(x => x.id === PERSONA).cta : DATA.cta.libelles.hero, "px-6 py-3.5 text-base")}
     </div>
-    <p class="mt-4 text-sm text-slate-400">${e(DATA.cta.precision)}</p>
+    <p class="mt-4 text-sm text-slate-400">${e(DATA.cta.precisionHero)}</p>
     <div class="mt-10 flex flex-wrap justify-center gap-3">
       ${DATA.hero.pills.map(p => `
         <span class="rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-slate-200">${e(p)}</span>`).join("")}
@@ -506,7 +520,7 @@ const personas = () => `
           <h3 class="mt-4 text-xl font-bold text-slate-900">${e(p.titre)}</h3>
           <p class="mt-4 flex-1 text-slate-600 leading-relaxed">${e(p.texte)}</p>
           <a href="#demo" data-cta class="mt-8 inline-flex items-center gap-1.5 font-semibold text-primary-600 hover:text-primary-700">
-            ${e(DATA.cta.libelle)} <span aria-hidden="true">→</span>
+            ${e(p.cta)} <span aria-hidden="true">→</span>
           </a>
         </article>`).join("")}
     </div>
@@ -538,7 +552,7 @@ const final = () => `
     <h2 class="text-3xl md:text-4xl font-bold text-white">${e(DATA.final.titre)}</h2>
     <p class="mt-6 mx-auto max-w-2xl text-lg text-slate-200 leading-relaxed">${e(DATA.final.chapo)}</p>
     <!-- Déjà dans la section : ce bouton-là ouvre la prise de RDV Bookings dans un nouvel onglet. -->
-    <div class="mt-10">${ctaBleu("px-8 py-4 text-base", DATA.cta.url, true)}</div>
+    <div class="mt-10">${ctaBleu(DATA.cta.libelles.final, "px-8 py-4 text-base", DATA.cta.url, true)}</div>
     <p class="mt-4 text-sm text-slate-300">${e(DATA.cta.precision)}</p>
     <div id="calendrier" class="mt-12 mx-auto max-w-4xl overflow-hidden rounded-xl bg-white">
       ${renseigne(CONVERSION.calendarUrl)
@@ -576,7 +590,7 @@ const footer = () => `
 
 document.getElementById('app').innerHTML =
   header() + `<main>` + hero() + reassurance() + contraste()
-  + ctaMilieu("Vous voulez voir ce que ça donne sur vos propres OT ? Parlons de votre cas.")
+  + ctaMilieu(DATA.cta.milieuTexte, DATA.cta.libelles.milieu)
   + flux() + personas() + fondateurs()
   + faq() + final() + `</main>` + footer();
 
