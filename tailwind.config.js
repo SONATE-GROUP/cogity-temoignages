@@ -1,20 +1,29 @@
-/* Configuration Tailwind de la LP, reprise telle quelle de l'ancienne config
-   inline (CDN). Tokens repris du site cogity.com : navy-950 #060D28,
-   navy-800 #162D70, primary-600 #2540EA, primary-50 #EFF3FF, échelle slate,
-   accent transport #EA580C, typographie Geist Sans (variable, titres en 800).
+/* Configuration Tailwind de la LP. Tokens repris de la DA cogity.com
+   (septembre 2026) : encre #171717, fond #fbfbfa, filets #dedfda,
+   vert #006b4f (survol #00543e, doux #e8f1ed), menthe #64d4ad sur fond sombre,
+   vert forêt #103b2c pour la section de clôture, ambre #a2510c pour les alertes.
+   Typographie Geist (titres en 500, interlettrage serré) et Geist Mono (surtitres).
    Compiler après toute modification de classes dans index.html :
    npx tailwindcss@3.4 -c tailwind.config.js -i src/tailwind.css -o assets/css/app.css --minify */
 module.exports = {
   content: ['./index.html'],
   theme: { extend: {
     colors: {
-      navy:      { 950:'#060D28', 900:'#0B1740', 800:'#162D70' },
-      primary:   { 700:'#1E34C4', 600:'#2540EA', 500:'#6085FA', 50:'#EFF3FF' },
-      slate:     { 900:'#0F172A', 700:'#334155', 600:'#475569', 500:'#64748B', 400:'#94A3B8', 300:'#CBD5E1', 200:'#E2E8F0', 100:'#F1F5F9', 50:'#F8FAFC' },
-      transport: '#EA580C',
-      valide:    '#059669'
+      encre:  { DEFAULT:'#171717', 2:'#424242' },
+      gris:   '#686b68',
+      filet:  '#dedfda',
+      fond:   '#fbfbfa',
+      vert:   { DEFAULT:'#006b4f', fonce:'#00543e', doux:'#e8f1ed', sauge:'#edf2eb', bord:'#d5dfd0' },
+      menthe: '#64d4ad',
+      ambre:  '#a2510c',
+      nuit:   '#0f1311',
+      foret:  '#103b2c'
     },
-    fontFamily: { sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'] },
-    maxWidth: { lisible: '68ch' }
+    fontFamily: {
+      sans: ['Geist', 'Arial', 'sans-serif'],
+      mono: ['Geist Mono', 'ui-monospace', 'monospace']
+    },
+    borderRadius: { DEFAULT: '5px' },
+    maxWidth: { site: '1440px', lisible: '68ch' }
   }}
 };
