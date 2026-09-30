@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Cogity">
-<meta property="og:url" content="https://cogity-temoignages.vercel.app/">
+<meta property="og:url" content="https://cogity-temoignages.vercel.app/transport">
 <meta property="og:title" content="Cogity | L’IA opérationnelle pour les transporteurs">
 <meta property="og:description" content="Le système d’IA de votre entreprise de transport : vos connaissances, vos compétences et vos outils enfin reliés. Des usages concrets, déjà en production chez des transporteurs.">
 <meta property="og:image" content="https://cogity-temoignages.vercel.app/assets/og-cogity-transport.png">
@@ -25,22 +25,22 @@
 <meta name="twitter:title" content="Cogity | L’IA opérationnelle pour les transporteurs">
 <meta name="twitter:description" content="Le système d’IA de votre entreprise de transport : vos connaissances, vos compétences et vos outils enfin reliés.">
 <meta name="twitter:image" content="https://cogity-temoignages.vercel.app/assets/og-cogity-transport.png">
-<link rel="icon" type="image/png" href="assets/marque/favicon-32.png">
+<link rel="icon" type="image/png" href="/assets/marque/favicon-32.png">
 
 <!-- RGPD : aucune ressource tierce au chargement. Polices auto-hébergées
      (Geist variable en sous-ensemble latin, Geist Mono reprise de cogity.com),
      Tailwind compilé en local :
-     npx tailwindcss@3.4 -c tailwind.config.js -i src/tailwind.css -o assets/css/app.css --minify
+     npx tailwindcss@3.4 -c tailwind.config.js -i src/tailwind.css -o assets/css/app.css --minify (depuis la racine du dépôt)
      à relancer après tout ajout de classe dans ce fichier. -->
-<link rel="preload" href="assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/app.css">
+<link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/app.css">
 <style>
   @font-face {
     font-family: 'Geist';
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url(assets/fonts/geist-latin.woff2) format('woff2');
+    src: url(/assets/fonts/geist-latin.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
   @font-face {
@@ -48,7 +48,7 @@
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url(assets/fonts/geist-mono.woff) format('woff');
+    src: url(/assets/fonts/geist-mono.woff) format('woff');
   }
   /* overflow-x reste uniquement sur html : le poser aussi sur body transforme
      body en conteneur de scroll et casse position:sticky sur le header. */
@@ -126,7 +126,7 @@ const DATA = {
   marque: {
     nom: "Cogity",
     /* Assets rapatriés depuis cogity.com : aucune requête tierce au chargement. */
-    logo: "assets/marque/logo-noir.png",
+    logo: "/assets/marque/logo-noir.png",
     site: "https://cogity.com/",
     baseline: "L’intelligence propre de votre entreprise.",
     signature: "Where AI meets your memory.",
@@ -173,14 +173,14 @@ const DATA = {
   reassurance: {
     texte: "Ils nous font confiance",
     logos: [
-      { nom: "Évolutrans",    url: "assets/logos/evolutrans.png" },
-      { nom: "Le Roy",        url: "assets/logos/le-roy.png" },
-      { nom: "Groupe Ferron", url: "assets/logos/ferron.png" },
-      { nom: "Bréger",        url: "assets/logos/breger.svg" },
-      { nom: "Animalis",      url: "assets/logos/animalis.png" },
-      { nom: "VandB",         url: "assets/logos/vandb.png" },
-      { nom: "Vivalto Santé", url: "assets/logos/vivalto-sante.png" },
-      { nom: "Groupe Ydeo",   url: "assets/logos/ydeo.png" }
+      { nom: "Évolutrans",    url: "/assets/logos/evolutrans.png" },
+      { nom: "Le Roy",        url: "/assets/logos/le-roy.png" },
+      { nom: "Groupe Ferron", url: "/assets/logos/ferron.png" },
+      { nom: "Bréger",        url: "/assets/logos/breger.svg" },
+      { nom: "Animalis",      url: "/assets/logos/animalis.png" },
+      { nom: "VandB",         url: "/assets/logos/vandb.png" },
+      { nom: "Vivalto Santé", url: "/assets/logos/vivalto-sante.png" },
+      { nom: "Groupe Ydeo",   url: "/assets/logos/ydeo.png" }
     ]
   },
 
@@ -244,7 +244,7 @@ const DATA = {
 
   /* Témoignages écrits : Florent en envoie 3 (DSI Évolutrans, Le Roy
      Logistique...). Tant que la liste est vide, la section n'est pas affichée.
-     Format : { citation, nom, fonction, entreprise, logo: "assets/logos/..." } */
+     Format : { citation, nom, fonction, entreprise, logo: "/assets/logos/..." } */
   temoignages: {
     eyebrow: "Ils en parlent",
     titre: "Ce qu’en disent nos clients transporteurs",
@@ -263,26 +263,26 @@ const DATA = {
         nom: "Florent Noury",
         role: "Co-fondateur",
         parcours: "12 ans de B2B chez HPE et Blue, entre terrain, produit et go-to-market.",
-        photoUrl: "assets/fondateurs/florent-noury.jpeg"
+        photoUrl: "/assets/fondateurs/florent-noury.jpeg"
       },
       {
         nom: "Aldo Kei Taud",
         role: "Co-fondateur, CMO",
         parcours: "10 ans à la tête de sa propre agence de création et d’événementiel, avant de fonder Cogity.",
-        photoUrl: "assets/fondateurs/aldo-kei-taud.jpeg"
+        photoUrl: "/assets/fondateurs/aldo-kei-taud.jpeg"
       },
       {
         nom: "Victor Favreau",
         role: "Co-fondateur, CTO",
         parcours: "7 ans de développement et d’architecture logicielle chez Blue et IMA Technologies, certifié NVIDIA en IA générative.",
-        photoUrl: "assets/fondateurs/victor-favreau.jpeg"
+        photoUrl: "/assets/fondateurs/victor-favreau.jpeg"
       }
     ],
     /* badges : réassurance institutionnelle (incubateur, partenaires). */
     badges: [
-      { nom: "Laval Mayenne Technopole", url: "assets/logos/laval-mayenne-technopole.png" },
-      { nom: "NVIDIA Inception Program", url: "assets/logos/nvidia-inception.png" },
-      { nom: "France Digitale", url: "assets/logos/france-digitale.webp" }
+      { nom: "Laval Mayenne Technopole", url: "/assets/logos/laval-mayenne-technopole.png" },
+      { nom: "NVIDIA Inception Program", url: "/assets/logos/nvidia-inception.png" },
+      { nom: "France Digitale", url: "/assets/logos/france-digitale.webp" }
     ]
   },
 

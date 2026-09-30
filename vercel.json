@@ -1,5 +1,8 @@
 {
+  "trailingSlash": false,
   "redirects": [
-    { "source": "/cogity.html", "destination": "/", "permanent": true }
+    { "source": "/", "destination": "/transport", "permanent": false },
+    { "source": "/cogity.html", "destination": "/transport", "permanent": true },
+    { "source": "/index.html", "destination": "/transport", "permanent": true }
   ]
 }
