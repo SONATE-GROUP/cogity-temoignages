@@ -242,13 +242,35 @@ const DATA = {
     ]
   },
 
-  /* Témoignages écrits : Florent en envoie 3 (DSI Évolutrans, Le Roy
-     Logistique...). Tant que la liste est vide, la section n'est pas affichée.
-     Format : { citation, nom, fonction, entreprise, logo: "/assets/logos/..." } */
+  /* Témoignages écrits. Tant que la liste est vide, la section n'est pas affichée.
+     Format : { entreprise, secteur, accroche, citation, nom, fonction,
+     logo: "/assets/logos/...", photoUrl: "/assets/temoignages/..." }.
+     photoUrl vide : un médaillon aux initiales remplace la photo. */
   temoignages: {
     eyebrow: "Ils en parlent",
     titre: "Ce qu’en disent nos clients transporteurs",
-    items: []
+    items: [
+      {
+        entreprise: "Le Roy Logistique",
+        secteur: "Transport & logistique",
+        accroche: "Les ordres de transport ne se ressaisissent plus.",
+        citation: "Avant Cogity, nos exploitants passaient 2 à 3 heures par jour à ressaisir des OT. Aujourd’hui, c’est automatique. Ils se concentrent sur la planification et la relation client.",
+        nom: "Isabelle Marie",
+        fonction: "Directrice des Systèmes d’Information",
+        logo: "/assets/logos/le-roy.png",
+        photoUrl: ""
+      },
+      {
+        entreprise: "Évolutrans",
+        secteur: "Groupement transport",
+        accroche: "Une plateforme au niveau du groupement, des usages concrets pour ses adhérents.",
+        citation: "Cogity est devenu un partenaire clé sur nos sujets d’IA et d’automatisation. Leur accompagnement nous aide à optimiser certains processus au niveau du groupement, tout en apportant à nos adhérents des solutions concrètes pour automatiser leurs tâches du quotidien.",
+        nom: "Nicolas Sorlin",
+        fonction: "Directeur des Systèmes d’Information",
+        logo: "/assets/logos/evolutrans.png",
+        photoUrl: ""
+      }
+    ]
   },
 
   fondateurs: {
@@ -517,17 +539,26 @@ const methode = () => `
 </section>`;
 
 const temoignages = () => !DATA.temoignages.items.length ? `` : `
-<section class="bg-white border-y border-filet py-24 lg:py-28">
+<section id="temoignages" class="bg-white border-y border-filet py-24 lg:py-28">
   <div class="${conteneur}">
     <div class="max-w-3xl">${titreSection(DATA.temoignages)}</div>
     <div class="mt-14 grid gap-6 ${["", "max-w-2xl", "md:grid-cols-2", "md:grid-cols-3"][Math.min(DATA.temoignages.items.length, 3)]}">
       ${DATA.temoignages.items.map(t => `
-        <figure class="reveal flex flex-col rounded border border-filet bg-fond p-8">
-          ${t.logo ? `<img src="${e(t.logo)}" alt="${e(t.entreprise)}" class="h-9 w-auto self-start object-contain">` : ``}
-          <blockquote class="mt-6 flex-1 text-lg leading-relaxed text-encre">« ${e(t.citation)} »</blockquote>
-          <figcaption class="mt-8 border-t border-filet pt-5">
-            <div class="font-medium text-encre">${e(t.nom)}</div>
-            <div class="text-sm text-gris">${e(t.fonction)}, ${e(t.entreprise)}</div>
+        <figure class="reveal flex flex-col rounded border border-filet bg-fond p-8 lg:p-10">
+          <div class="flex items-center justify-between gap-6">
+            ${t.logo ? `<span class="h-10 w-32 flex items-center"><img src="${e(t.logo)}" alt="${e(t.entreprise)}" class="max-h-full max-w-full object-contain"></span>` : `<span></span>`}
+            <span class="eyebrow text-right text-gris">${e(t.secteur)}</span>
+          </div>
+          <h3 class="mt-8 text-2xl md:text-[27px]/[1.2] text-encre">« ${e(t.accroche)} »</h3>
+          <blockquote class="mt-5 flex-1 text-lg leading-relaxed text-encre-2">« ${e(t.citation)} »</blockquote>
+          <figcaption class="mt-8 flex items-center gap-4 border-t border-filet pt-6">
+            ${t.photoUrl
+              ? `<img src="${e(t.photoUrl)}" alt="${e(t.nom)}" class="h-14 w-14 shrink-0 rounded-full object-cover">`
+              : `<span aria-hidden="true" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-vert-doux font-medium text-vert">${e(t.nom.split(" ").map(m => m[0]).join(""))}</span>`}
+            <div>
+              <div class="font-medium text-encre">${e(t.nom)}</div>
+              <div class="text-sm text-gris">${e(t.fonction)} · ${e(t.entreprise)}</div>
+            </div>
           </figcaption>
         </figure>`).join("")}
     </div>
