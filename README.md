@@ -15,6 +15,7 @@ La racine `/` redirige temporairement vers `/transport` (voir `vercel.json`).
 assets/            ressources partagées par toutes les LP (polices, CSS, logos, photos)
 src/tailwind.css   source Tailwind
 tailwind.config.js tokens de la DA Cogity, scanne tous les */index.html
+robots.txt         bloque l'indexation de tout le domaine (LP de campagne uniquement)
 transport/         LP transporteurs
 vercel.json        redirections
 ```
